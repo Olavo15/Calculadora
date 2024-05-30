@@ -9,6 +9,7 @@ class CalculatorApp(App):
         self.operators = ["/", "*", "+", "-"]
         self.last_was_operator = None
         self.last_button = None
+        self.result_shown = False
 
         main_layout = BoxLayout(orientation="vertical")
 
@@ -81,6 +82,11 @@ class CalculatorApp(App):
         return main_layout
 
     def on_button_press(self, instance):
+        if self.result_shown:
+            self.solution.text = ""
+            self.top_layout.text = ""
+            self.result_shown = False
+
         current = self.solution.text
         button_text = instance.text
 
@@ -107,6 +113,7 @@ class CalculatorApp(App):
                 solution = str(eval(self.solution.text))
                 self.top_layout.text = self.solution.text + " ="
                 self.solution.text = solution
+                self.result_shown = True
             except Exception:
                 self.top_layout.text = "Error"
                 self.solution.text = ""
